@@ -96,18 +96,16 @@ logger.add(
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-
-# todo: need test
 def detect_gpu():
     gpu_info = subprocess.run(['lspci'], stdout=subprocess.PIPE, text=True).stdout.lower()
-    if 'vga compatible controller' in gpu_info or '3d controller' in gpu_info:
-        if 'nvidia' in gpu_info:
-            return 'nvidia'
-        elif 'amd' in gpu_info or 'radeon' in gpu_info:
-            return 'amd'
-    return None        
-    
-# todo: In this case, you may need to access `/dev/` as a Docker volume.
+    for line in gpu_info.split('\n'):
+        if 'vga compatible controller' in line or '3d controller' in line:
+            if 'nvidia' in line:
+                return 'nvidia'
+            elif 'amd' in line or 'radeon' in line:
+                return 'amd'
+    return None
+
 def find_vaapi_device():
     vaapi_device_dir = "/dev/dri"
     if os.path.exists(vaapi_device_dir):
