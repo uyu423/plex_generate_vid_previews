@@ -102,7 +102,7 @@ def detect_gpu():
         if 'vga compatible controller' in line or '3d controller' in line:
             if 'nvidia' in line:
                 return 'nvidia'
-            elif 'amd' in line or 'radeon' in line:
+            elif 'amd' in line or 'advanced micro devices' in line or 'radeon' in line:
                 return 'amd'
     return None
 
